@@ -1,0 +1,2 @@
+﻿dotnet ef migrations add firstMigrations  --output-dir Data/Migrations --context ApplicationDbContext
+dotnet ef database update  

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sports.Models
 {
-    public class State
+    public class States
     {
         public string key { get; set; }
         public string value { get; set; }

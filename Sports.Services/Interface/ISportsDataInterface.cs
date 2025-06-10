@@ -9,7 +9,10 @@ namespace Sports.Services.Interface
 {
     public interface ISportsDataInterface
     {
-        public Task<Sport> LoadFromJsonUrlAsync(string url);
+        public Task<List<Sport>> LoadFromJsonUrlAsync(string url);
+
+        public void GetById(int Id);
+
 
     }
 }

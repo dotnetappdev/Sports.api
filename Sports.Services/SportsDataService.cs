@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Sports.Infrastructure;
 using Sports.Models;
 using Sports.Services.Interface;
 using System;
@@ -9,7 +11,13 @@ namespace Sports.Services
 {
     public class SportsDataService : ISportsDataInterface
     {
-        public async Task<Sport> LoadFromJsonUrlAsync(string url)
+        private readonly ApplicationDbContext _context;
+        SportsDataService(ApplicationDbContext context)
+
+        {
+            _context = context;
+        }
+        public async Task<List<Sport>> LoadFromJsonUrlAsync(string url)
         {
             using var httpClient = new HttpClient();
             using var response = await httpClient.GetAsync(url);
@@ -21,10 +29,19 @@ namespace Sports.Services
             };
 
             using var stream = await response.Content.ReadAsStreamAsync();
-            var sportsData = await JsonSerializer.DeserializeAsync<Sport>(stream, options);
+
+            options.Converters.Add(new NavigationInfoJsonConverter());
+            var sportsData = await JsonSerializer.DeserializeAsync<List<Sport>>(stream, options);
             if (sportsData == null)
                 throw new InvalidOperationException("Failed to deserialize JSON data.");
             return sportsData;
         }
+
+        public void SaveData(int Id)
+        {
+
+
+        }
+
     }
 }

@@ -38,4 +38,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Sports.Infrastructure\Sports.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\Sports.Model\Sports.Models.csproj" />
+	</ItemGroup>
 </Project>

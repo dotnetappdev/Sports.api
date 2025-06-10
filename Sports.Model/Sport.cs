@@ -21,7 +21,7 @@ namespace Sports.Models
         public int status { get; set; }
         public bool statusSpecified { get; set; }
         public object names { get; set; }
-        public List<State> state { get; set; }
+        public List<States> state { get; set; }
         public object current_state { get; set; }
         public int attendance { get; set; }
         public bool attendanceSpecified { get; set; }

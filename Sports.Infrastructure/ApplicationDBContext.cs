@@ -4,16 +4,20 @@ using Sports.Models;
 
 namespace Sports.Infrastructure
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+   : base(options)
+        {
 
+        }
         public DbSet<Sport> Sports { get; set; }
 
         public DbSet<Meta> Metas { get; set; }
         public DbSet<NavigationInfo> NavigationInfos { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<RelatedSportsEvent> RelatedSportsEvents { get; set; }
-        public DbSet<States> Properties { get; set; }
+        public DbSet<States> States { get; set; }
 
         public DbSet<Value> Values { get; set; }
 
