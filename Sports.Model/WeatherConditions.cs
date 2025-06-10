@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Sports.Models
 {
     public class WeatherConditions
     {
+
         public int temperature_fahrenheit { get; set; }
         public bool temperature_fahrenheitSpecified { get; set; }
         public double temperature_celsius { get; set; }
@@ -20,7 +22,7 @@ namespace Sports.Models
         public bool wind_directionSpecified { get; set; }
         public int weather_type { get; set; }
         public bool weather_typeSpecified { get; set; }
-        public object tail_wind_speed { get; set; }
+        //public object tail_wind_speed { get; set; }
         public int baseball_home_plate_wind_direction { get; set; }
         public bool baseball_home_plate_wind_directionSpecified { get; set; }
     }

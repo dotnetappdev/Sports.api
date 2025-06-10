@@ -24,6 +24,30 @@ namespace Sports.Infrastructure
         public DbSet<WeatherConditions> WeatherConditions { get; set; }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure DateAndTimeInfo as keyless entity
+            modelBuilder.Entity<DateAndTimeInfo>()
+                .HasNoKey();
+            modelBuilder.Entity<Meta>()
+                        .HasNoKey();
 
+            modelBuilder.Entity<Property>()
+                     .HasNoKey();
+
+            modelBuilder.Entity<RelatedSportsEvent>()
+                   .HasNoKey();
+            modelBuilder.Entity<Sport>()
+               .HasNoKey();
+            modelBuilder.Entity<States>()
+             .HasNoKey();
+            modelBuilder.Entity<Value>()
+       .HasNoKey();
+            modelBuilder.Entity<WeatherConditions>()
+       .HasNoKey();
+
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

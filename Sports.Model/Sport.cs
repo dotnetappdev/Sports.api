@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Sports.Models
 {
     public class Sport
     {
+
         public string id { get; set; }
 
         public string description { get; set; }
@@ -20,20 +23,21 @@ namespace Sports.Models
         public bool end_timeSpecified { get; set; }
         public int status { get; set; }
         public bool statusSpecified { get; set; }
-        public object names { get; set; }
+        //public object names { get; set; }
         public List<States> state { get; set; }
-        public object current_state { get; set; }
+        //public object current_state { get; set; }
         public int attendance { get; set; }
         public bool attendanceSpecified { get; set; }
         public string sport_id { get; set; }
         public string venue_id { get; set; }
-        public object start_venue_id { get; set; }
-        public object finish_venue_id { get; set; }
+        //public object start_venue_id { get; set; }
+        //public object finish_venue_id { get; set; }
         public string phase_id { get; set; }
         public List<string> sports_organization_ids { get; set; }
         public List<string> parent_sports_event_ids { get; set; }
+        [NotMapped]
         public WeatherConditions weather_conditions { get; set; }
-        public object event_attributes { get; set; }
+        //public object event_attributes { get; set; }
         public string sports_discipline_id { get; set; }
         public string sports_gender_id { get; set; }
         public int sibling_order { get; set; }
@@ -51,16 +55,24 @@ namespace Sports.Models
         public string away_participant_id { get; set; }
         public int participant_type { get; set; }
         public bool participant_typeSpecified { get; set; }
+        [NotMapped]
         public DateAndTimeInfo date_and_time_info { get; set; }
         public string translation_reference_id { get; set; }
-        public object sports { get; set; }
-        public object sports_organizations { get; set; }
-        public object venues { get; set; }
-        public object child_sports_events { get; set; }
-        public List<RelatedSportsEvent> related_sports_events { get; set; }
 
+
+        //public object sports { get; set; }
+
+        //public object sports_organizations { get; set; }
+
+        //public object venues { get; set; }
+        //[JsonIgnore]
+        //public object child_sports_events { get; set; }
+        [NotMapped]
+
+        public List<RelatedSportsEvent> related_sports_events { get; set; }
+        [NotMapped]
         public Meta meta { get; set; }
-        public object xids { get; set; }
+        //public object xids { get; set; }
     }
 
 }

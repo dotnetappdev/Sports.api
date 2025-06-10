@@ -39,9 +39,9 @@ namespace Sports.DataImport
             var processor = host.Services.GetRequiredService<ISportsDataInterface>();
             string url = "https://myth.fra1.digitaloceanspaces.com/misc/528%20%281%29.json";
             List<Sport> test = await processor.LoadFromJsonUrlAsync(url);
-            var test2 = await processor.SaveData(test);
-
-            var test3 = 2;
+            var test2 = processor.SaveData(test);
+            Console.WriteLine($"Data saved successfully. Number of records: {test.Count()}");
+            Console.ReadLine();
         }
     }
 }

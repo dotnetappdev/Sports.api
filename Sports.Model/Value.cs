@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Sports.Models
 {
     public class Value
     {
+       
         public string id { get; set; }
         public string value { get; set; }
     }
