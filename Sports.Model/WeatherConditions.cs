@@ -29,7 +29,8 @@ namespace Sports.Models
         public int baseball_home_plate_wind_direction { get; set; }
         public bool baseball_home_plate_wind_directionSpecified { get; set; }
 
-        public string SportId { get; set; }
+        public int SportsId { get; set; }
         public Sport Sport { get; set; }
     }
+ 
 }

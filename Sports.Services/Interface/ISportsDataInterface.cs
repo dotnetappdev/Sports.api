@@ -16,8 +16,9 @@ namespace Sports.Services.Interface
 
                 public Task<Sports.Models.Sport> GetById(string Id);
         public  Task<List<Sports.Models.Sport>?> GetAll();
+        public Task<SportAPIResponse> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue);
 
-        public  Task<SportAPIResponse> SaveData(List<Sports.Models.Sport> sportsData);
+        public  SportAPIResponse SaveData(List<Sports.Models.Sport> sportsData);
 
     }
 }

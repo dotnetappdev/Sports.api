@@ -49,10 +49,17 @@ namespace Sports.DataImport
                 return;
             }
             SportAPIResponse dataFromService = await processor.LoadFromJsonUrlAsync(url);
-
             var data = (List<Sports.Infrastructure.DTOs.Sport>)dataFromService.Data;
-            var transformedData = SportsMapper.SportDTOToSport(data);
-            var saveData = processor.SaveData(transformedData);
+
+            try
+            {
+                var transformedData = SportsMapper.SportDTOToSport(data);
+                var saveData = processor.SaveData(transformedData);
+            }catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while processing the data: {ex.Message}");
+             
+            }
             Console.WriteLine($"Data saved successfully. Number of records: {data.Count()}");
             Console.ReadLine();
         }

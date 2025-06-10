@@ -38,13 +38,11 @@ namespace Sports.api
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
                     Title = "Sports API",
-                    Version = "v1"
+                    Version = "v1",
+                    
                 });
 
-
-                var filePath = Path.Combine(System.AppContext.BaseDirectory, "MyApi.xml");
-                c.IncludeXmlComments(filePath);
-
+ 
             });
 
 

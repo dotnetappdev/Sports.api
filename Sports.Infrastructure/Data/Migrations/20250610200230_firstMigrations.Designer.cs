@@ -12,7 +12,7 @@ using Sports.Infrastructure;
 namespace Sports.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610161720_firstMigrations")]
+    [Migration("20250610200230_firstMigrations")]
     partial class firstMigrations
     {
         /// <inheritdoc />
@@ -33,11 +33,10 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MetaId"));
 
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<string>("language")
@@ -59,7 +58,7 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("MetaId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.ToTable("Metas");
                 });
@@ -72,11 +71,10 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NavigationInfoId"));
 
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<bool?>("has_standings")
@@ -93,7 +91,7 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("NavigationInfoId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.ToTable("NavigationInfos");
                 });
@@ -106,11 +104,10 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyId"));
 
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<int?>("ValuesId")
@@ -121,7 +118,7 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("PropertyId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.HasIndex("ValuesId");
 
@@ -130,30 +127,36 @@ namespace Sports.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Sports.Models.RelatedSportsEvent", b =>
                 {
-                    b.Property<string>("id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RelatedSportsEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<int?>("SportsId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RelatedSportsEventId"));
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<string>("depth")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("navigation_infoNavigationInfoId")
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("navigation_infoNavigationInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("type")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("type_detail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("RelatedSportsEventId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.HasIndex("navigation_infoNavigationInfoId");
 
@@ -199,7 +202,8 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("id")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "Id");
 
                     b.PrimitiveCollection<string>("parent_sports_event_ids")
                         .HasColumnType("nvarchar(max)");
@@ -283,11 +287,10 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<string>("key")
@@ -300,7 +303,7 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.ToTable("States");
                 });
@@ -313,11 +316,10 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuesId"));
 
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SportsId1")
                         .HasColumnType("int");
 
                     b.Property<string>("id")
@@ -330,7 +332,7 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("ValuesId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId1");
 
                     b.ToTable("Values");
                 });
@@ -342,10 +344,6 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeatherConditionsId"));
-
-                    b.Property<string>("SportId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SportsId")
                         .HasColumnType("int");
@@ -394,7 +392,8 @@ namespace Sports.Infrastructure.Data.Migrations
 
                     b.HasKey("WeatherConditionsId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsId")
+                        .IsUnique();
 
                     b.ToTable("WeatherConditions");
                 });
@@ -403,7 +402,7 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany("Metas")
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -414,7 +413,7 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany("navigation_info")
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -425,7 +424,7 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany("properties")
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -440,15 +439,17 @@ namespace Sports.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Sports.Models.RelatedSportsEvent", b =>
                 {
-                    b.HasOne("Sports.Models.Sport", null)
+                    b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany("related_sports_events")
-                        .HasForeignKey("SportsId");
+                        .HasForeignKey("SportsId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Sports.Models.NavigationInfo", "navigation_info")
                         .WithMany()
-                        .HasForeignKey("navigation_infoNavigationInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("navigation_infoNavigationInfoId");
+
+                    b.Navigation("Sport");
 
                     b.Navigation("navigation_info");
                 });
@@ -457,7 +458,7 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany("States")
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -468,7 +469,7 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
                         .WithMany()
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -478,8 +479,8 @@ namespace Sports.Infrastructure.Data.Migrations
             modelBuilder.Entity("Sports.Models.WeatherConditions", b =>
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
-                        .WithMany()
-                        .HasForeignKey("SportsId")
+                        .WithOne("weather_conditions")
+                        .HasForeignKey("Sports.Models.WeatherConditions", "SportsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -497,6 +498,8 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Navigation("properties");
 
                     b.Navigation("related_sports_events");
+
+                    b.Navigation("weather_conditions");
                 });
 #pragma warning restore 612, 618
         }

@@ -68,15 +68,15 @@ namespace Sports.Infrastructure.Data.Migrations
                     update_action = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     update_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     language = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: false)
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Metas", x => x.MetaId);
                     table.ForeignKey(
-                        name: "FK_Metas_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_Metas_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
                         principalColumn: "SportsId",
                         onDelete: ReferentialAction.Cascade);
@@ -92,15 +92,15 @@ namespace Sports.Infrastructure.Data.Migrations
                     value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     has_standings = table.Column<bool>(type: "bit", nullable: true),
                     is_knockout = table.Column<bool>(type: "bit", nullable: true),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: false)
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NavigationInfos", x => x.NavigationInfoId);
                     table.ForeignKey(
-                        name: "FK_NavigationInfos_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_NavigationInfos_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
                         principalColumn: "SportsId",
                         onDelete: ReferentialAction.Cascade);
@@ -114,15 +114,15 @@ namespace Sports.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     key = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: false)
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_States", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_States_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_States_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
                         principalColumn: "SportsId",
                         onDelete: ReferentialAction.Cascade);
@@ -136,15 +136,15 @@ namespace Sports.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: false)
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Values", x => x.ValuesId);
                     table.ForeignKey(
-                        name: "FK_Values_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_Values_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
                         principalColumn: "SportsId",
                         onDelete: ReferentialAction.Cascade);
@@ -170,7 +170,6 @@ namespace Sports.Infrastructure.Data.Migrations
                     weather_typeSpecified = table.Column<bool>(type: "bit", nullable: false),
                     baseball_home_plate_wind_direction = table.Column<int>(type: "int", nullable: false),
                     baseball_home_plate_wind_directionSpecified = table.Column<bool>(type: "bit", nullable: false),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SportsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -188,27 +187,30 @@ namespace Sports.Infrastructure.Data.Migrations
                 name: "RelatedSportsEvents",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    type_detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    depth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    navigation_infoNavigationInfoId = table.Column<int>(type: "int", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: true)
+                    RelatedSportsEventId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    type_detail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    depth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    navigation_infoNavigationInfoId = table.Column<int>(type: "int", nullable: true),
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelatedSportsEvents", x => x.id);
+                    table.PrimaryKey("PK_RelatedSportsEvents", x => x.RelatedSportsEventId);
                     table.ForeignKey(
                         name: "FK_RelatedSportsEvents_NavigationInfos_navigation_infoNavigationInfoId",
                         column: x => x.navigation_infoNavigationInfoId,
                         principalTable: "NavigationInfos",
-                        principalColumn: "NavigationInfoId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "NavigationInfoId");
                     table.ForeignKey(
-                        name: "FK_RelatedSportsEvents_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_RelatedSportsEvents_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
-                        principalColumn: "SportsId");
+                        principalColumn: "SportsId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,15 +221,15 @@ namespace Sports.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     key = table.Column<int>(type: "int", nullable: false),
                     ValuesId = table.Column<int>(type: "int", nullable: true),
-                    SportId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SportsId = table.Column<int>(type: "int", nullable: false)
+                    SportsId = table.Column<int>(type: "int", nullable: false),
+                    SportsId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Properties", x => x.PropertyId);
                     table.ForeignKey(
-                        name: "FK_Properties_Sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_Properties_Sports_SportsId1",
+                        column: x => x.SportsId1,
                         principalTable: "Sports",
                         principalColumn: "SportsId",
                         onDelete: ReferentialAction.Cascade);
@@ -239,19 +241,19 @@ namespace Sports.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Metas_SportsId",
+                name: "IX_Metas_SportsId1",
                 table: "Metas",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NavigationInfos_SportsId",
+                name: "IX_NavigationInfos_SportsId1",
                 table: "NavigationInfos",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_SportsId",
+                name: "IX_Properties_SportsId1",
                 table: "Properties",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_ValuesId",
@@ -264,24 +266,25 @@ namespace Sports.Infrastructure.Data.Migrations
                 column: "navigation_infoNavigationInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RelatedSportsEvents_SportsId",
+                name: "IX_RelatedSportsEvents_SportsId1",
                 table: "RelatedSportsEvents",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_States_SportsId",
+                name: "IX_States_SportsId1",
                 table: "States",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Values_SportsId",
+                name: "IX_Values_SportsId1",
                 table: "Values",
-                column: "SportsId");
+                column: "SportsId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WeatherConditions_SportsId",
                 table: "WeatherConditions",
-                column: "SportsId");
+                column: "SportsId",
+                unique: true);
         }
 
         /// <inheritdoc />

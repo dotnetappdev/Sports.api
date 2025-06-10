@@ -124,7 +124,7 @@ namespace Sports.Services
                 options.Converters.Add(new NavigationInfoJsonConverter());
                 var sportsData = await JsonSerializer.DeserializeAsync<List<Sports.Infrastructure.DTOs.Sport>>(stream, options);
 
-                return new SportAPIResponse { Data = null, Message = "Load from Service Succeded", StatusCode = 200, Success = true };
+                return new SportAPIResponse { Data = sportsData, Message = "Load from Service Succeded", StatusCode = 200, Success = true };
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace Sports.Services
             }
 
         }
-        public async Task<SportAPIResponse> SaveData(List<Sports.Models.Sport> sportsData)
+        public  SportAPIResponse SaveData(List<Sports.Models.Sport> sportsData)
         { 
             if (sportsData == null)
             {
@@ -141,8 +141,8 @@ namespace Sports.Services
 
             try
             { 
-                await _context.Sports.AddRangeAsync(sportsData);
-                await _context.SaveChangesAsync();
+                 _context.Sports.AddRange(sportsData);
+                 _context.SaveChanges();
                 return new SportAPIResponse { Data = _context.Sports.ToList(), Message = "Save Sucess", StatusCode = 200, Success = true };
 
             }

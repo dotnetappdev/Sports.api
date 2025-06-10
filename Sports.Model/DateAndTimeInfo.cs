@@ -26,7 +26,7 @@ namespace Sports.Models
 
         public int NavigationInfoId { get; set; }
         // Foreign key to Sport
-        public string SportId { get; set; }
+        public int SportsId { get; set; }
         public Sport Sport { get; set; }
     }
 

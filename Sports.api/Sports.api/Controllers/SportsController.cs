@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Sports.Services.Interface;
-using static Sports.Models.Enums;
 using static Sports.Services.SportsDataService;
 
 namespace Sports.api.Controllers
@@ -33,26 +32,26 @@ namespace Sports.api.Controllers
                 return BadRequest("Search phrase cannot be null or empty.");
             }
             var sports = await _sportsDataInterface.GetAll();
+            
             if (sports == null || !sports.Any())
             {
                 return NotFound("No sports found.");
             }
-            var filtersports =_sportsDataInterface.Search(sports, searchField, searchPhrase);
+            var filtersports =_sportsDataInterface.Search(sports.AsQueryable(), searchField, searchPhrase);
 
-            if (filtersports == null || !filtersports.Any())
+            if (filtersports == null)
             {
                 return NotFound($"No sports found for search field {searchField} with phrase '{searchPhrase}'.");
-            }
-            
-            return Ok(filtersports);
-            
+            }            
+            return Ok(filtersports);            
         }
-            /// <summary>
-            /// Gets the specified identifier.
-            /// </summary>
-            /// <param name="id">The identifier.</param>
-            /// <returns></returns>
-            [HttpGet("{id}")]
+
+        /// <summary>
+        /// Gets the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             if (string.IsNullOrEmpty(id))

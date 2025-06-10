@@ -27,7 +27,10 @@ namespace Sports.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Sport>()
+       .HasOne(s => s.weather_conditions)
+       .WithOne(w => w.Sport)
+       .HasForeignKey<WeatherConditions>(w => w.SportsId); // Sp
             base.OnModelCreating(modelBuilder);
         }
     }
