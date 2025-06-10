@@ -12,8 +12,8 @@ using Sports.Infrastructure;
 namespace Sports.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610130206_firstMigrations")]
-    partial class firstMigrations
+    [Migration("20250610145915_firstpush")]
+    partial class firstpush
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,52 +25,21 @@ namespace Sports.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Sports.Models.DateAndTimeInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("actual_end_time_utc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("actual_end_time_utcSpecified")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("actual_start_time_utc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("actual_start_time_utcSpecified")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("end_date_local")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("end_date_localSpecified")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("scheduled_end_time_utc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("scheduled_end_time_utcSpecified")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("scheduled_start_time_utc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("scheduled_start_time_utcSpecified")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("start_date_local")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("start_date_localSpecified")
-                        .HasColumnType("bit");
-
-                    b.ToTable("DateAndTimeInfo");
-                });
-
             modelBuilder.Entity("Sports.Models.Meta", b =>
                 {
+                    b.Property<int>("MetaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MetaId"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("language")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -88,16 +57,27 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Property<bool>("update_idSpecified")
                         .HasColumnType("bit");
 
+                    b.HasKey("MetaId");
+
+                    b.HasIndex("SportsId");
+
                     b.ToTable("Metas");
                 });
 
             modelBuilder.Entity("Sports.Models.NavigationInfo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("NavigationInfoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NavigationInfoId"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
 
                     b.Property<bool?>("has_standings")
                         .HasColumnType("bit");
@@ -111,29 +91,56 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Property<string>("value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("NavigationInfoId");
+
+                    b.HasIndex("SportsId");
 
                     b.ToTable("NavigationInfos");
                 });
 
             modelBuilder.Entity("Sports.Models.Property", b =>
                 {
+                    b.Property<int>("PropertyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PropertyId"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ValuesId")
+                        .HasColumnType("int");
+
                     b.Property<int>("key")
                         .HasColumnType("int");
+
+                    b.HasKey("PropertyId");
+
+                    b.HasIndex("SportsId");
+
+                    b.HasIndex("ValuesId");
 
                     b.ToTable("Properties");
                 });
 
             modelBuilder.Entity("Sports.Models.RelatedSportsEvent", b =>
                 {
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("SportsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("depth")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("id")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("navigation_infoId")
+                    b.Property<int>("navigation_infoNavigationInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("type")
@@ -144,13 +151,23 @@ namespace Sports.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("navigation_infoId");
+                    b.HasKey("id");
+
+                    b.HasIndex("SportsId");
+
+                    b.HasIndex("navigation_infoNavigationInfoId");
 
                     b.ToTable("RelatedSportsEvents");
                 });
 
             modelBuilder.Entity("Sports.Models.Sport", b =>
                 {
+                    b.Property<int>("SportsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SportsId"));
+
                     b.Property<int>("attendance")
                         .HasColumnType("int");
 
@@ -158,15 +175,12 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("away_participant_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("direct_parent_sports_event_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("end_time")
@@ -182,14 +196,12 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("home_participant_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("id")
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("parent_sports_event_ids")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("participant_type")
@@ -199,7 +211,6 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("phase_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("result_status")
@@ -208,7 +219,7 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Property<bool>("result_statusSpecified")
                         .HasColumnType("bit");
 
-                    b.Property<int>("schedule_status")
+                    b.Property<int?>("schedule_status")
                         .HasColumnType("int");
 
                     b.Property<bool>("schedule_statusSpecified")
@@ -220,26 +231,22 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Property<bool>("scheduled_start_time_utcSpecified")
                         .HasColumnType("bit");
 
-                    b.Property<int>("sibling_order")
+                    b.Property<int?>("sibling_order")
                         .HasColumnType("int");
 
                     b.Property<bool>("sibling_orderSpecified")
                         .HasColumnType("bit");
 
                     b.Property<string>("sport_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("sports_discipline_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("sports_gender_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.PrimitiveCollection<string>("sports_organization_ids")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("start_date_local")
@@ -255,15 +262,15 @@ namespace Sports.Infrastructure.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("translation_reference_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("type")
                         .HasColumnType("int");
 
                     b.Property<string>("venue_id")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SportsId");
 
                     b.ToTable("Sports");
                 });
@@ -271,6 +278,16 @@ namespace Sports.Infrastructure.Data.Migrations
             modelBuilder.Entity("Sports.Models.States", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
                         .HasColumnType("int");
 
                     b.Property<string>("key")
@@ -281,23 +298,58 @@ namespace Sports.Infrastructure.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("SportsId");
+
                     b.ToTable("States");
                 });
 
             modelBuilder.Entity("Sports.Models.Value", b =>
                 {
+                    b.Property<int>("ValuesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ValuesId"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
                     b.Property<string>("id")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("ValuesId");
+
+                    b.HasIndex("SportsId");
+
                     b.ToTable("Values");
                 });
 
             modelBuilder.Entity("Sports.Models.WeatherConditions", b =>
                 {
+                    b.Property<int>("WeatherConditionsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WeatherConditionsId"));
+
+                    b.Property<string>("SportId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SportsId")
+                        .HasColumnType("int");
+
                     b.Property<int>("baseball_home_plate_wind_direction")
                         .HasColumnType("int");
 
@@ -340,18 +392,111 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Property<bool>("wind_speed_milesSpecified")
                         .HasColumnType("bit");
 
+                    b.HasKey("WeatherConditionsId");
+
+                    b.HasIndex("SportsId");
+
                     b.ToTable("WeatherConditions");
+                });
+
+            modelBuilder.Entity("Sports.Models.Meta", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany("Metas")
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Sports.Models.NavigationInfo", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany("navigation_info")
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Sports.Models.Property", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany("properties")
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Sports.Models.Value", "values")
+                        .WithMany()
+                        .HasForeignKey("ValuesId");
+
+                    b.Navigation("Sport");
+
+                    b.Navigation("values");
                 });
 
             modelBuilder.Entity("Sports.Models.RelatedSportsEvent", b =>
                 {
+                    b.HasOne("Sports.Models.Sport", null)
+                        .WithMany("related_sports_events")
+                        .HasForeignKey("SportsId");
+
                     b.HasOne("Sports.Models.NavigationInfo", "navigation_info")
                         .WithMany()
-                        .HasForeignKey("navigation_infoId")
+                        .HasForeignKey("navigation_infoNavigationInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("navigation_info");
+                });
+
+            modelBuilder.Entity("Sports.Models.States", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany("state")
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Sports.Models.Value", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany()
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Sports.Models.WeatherConditions", b =>
+                {
+                    b.HasOne("Sports.Models.Sport", "Sport")
+                        .WithMany()
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("Sports.Models.Sport", b =>
+                {
+                    b.Navigation("Metas");
+
+                    b.Navigation("navigation_info");
+
+                    b.Navigation("properties");
+
+                    b.Navigation("related_sports_events");
+
+                    b.Navigation("state");
                 });
 #pragma warning restore 612, 618
         }

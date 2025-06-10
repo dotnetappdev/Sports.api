@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Sports.Infrastructure;
-using Sports.Models;
+using Sports.Infrastructure.DTOs;
 using Sports.Services.Interface;
+using Sports.Services.Mapping;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -66,11 +67,16 @@ namespace Sports.Services
 
         public int SaveData(List<Sport> sportsData)
         {
-            _context.Sports.AddRange(sportsData);
+            _context.Sports.AddRange(SportsMapper.SportDTOToSport(sportsData));
             _context.SaveChanges();
             return 1; // Return a Task<int> with a dummy value, as SaveChanges() does not return an int directly
 
         }
 
+        public void SportDtoToSport(Sport sportDto)
+        {
+
+
+        }
     }
 }

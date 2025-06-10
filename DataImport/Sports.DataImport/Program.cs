@@ -3,9 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sports.Infrastructure;
-using Sports.Models;
+using Sports.Infrastructure.DTOs;
 using Sports.Services;
 using Sports.Services.Interface;
+using Sports.Services.Mapping;
 
 namespace Sports.DataImport
 {
@@ -38,9 +39,11 @@ namespace Sports.DataImport
 
             var processor = host.Services.GetRequiredService<ISportsDataInterface>();
             string url = "https://myth.fra1.digitaloceanspaces.com/misc/528%20%281%29.json";
-            List<Sport> test = await processor.LoadFromJsonUrlAsync(url);
-            var test2 = processor.SaveData(test);
-            Console.WriteLine($"Data saved successfully. Number of records: {test.Count()}");
+            List<Sport> dataFromService = await processor.LoadFromJsonUrlAsync(url);
+
+            var test = SportsMapper.SportDTOToSport(dataFromService);
+            var saveData = processor.SaveData(dataFromService);
+            Console.WriteLine($"Data saved successfully. Number of records: {dataFromService.Count()}");
             Console.ReadLine();
         }
     }

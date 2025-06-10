@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-
-namespace Sports.Models
+namespace Sports.Infrastructure.DTOs
 {
     public class WeatherConditions
     {
-        [Key]
-        public int WeatherConditionsId { get; set; }
+
         public int temperature_fahrenheit { get; set; }
         public bool temperature_fahrenheitSpecified { get; set; }
         public double temperature_celsius { get; set; }
@@ -28,8 +25,5 @@ namespace Sports.Models
         //public object tail_wind_speed { get; set; }
         public int baseball_home_plate_wind_direction { get; set; }
         public bool baseball_home_plate_wind_directionSpecified { get; set; }
-
-        public string SportId { get; set; }
-        public Sport Sport { get; set; }
     }
 }

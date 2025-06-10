@@ -1,4 +1,4 @@
-﻿using Sports.Models;
+﻿using Sports.Infrastructure.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

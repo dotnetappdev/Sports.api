@@ -5,8 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-
-namespace Sports.Models
+namespace Sports.Infrastructure.DTOs
 {
     public class RelatedSportsEvent
     {

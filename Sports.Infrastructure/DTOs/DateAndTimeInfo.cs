@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-namespace Sports.Models
+
+namespace Sports.Infrastructure.DTOs
 {
     public class DateAndTimeInfo
     {
-        [Key]
-        public int DateAndTimeInfoId { get; set; }
+        [JsonIgnore]
+        public int Id { get; set; }
         public DateTime scheduled_start_time_utc { get; set; }
         public bool scheduled_start_time_utcSpecified { get; set; }
         public DateTime scheduled_end_time_utc { get; set; }
@@ -23,11 +23,6 @@ namespace Sports.Models
         public bool start_date_localSpecified { get; set; }
         public DateTime end_date_local { get; set; }
         public bool end_date_localSpecified { get; set; }
-
-        public int NavigationInfoId { get; set; }
-        // Foreign key to Sport
-        public string SportId { get; set; }
-        public Sport Sport { get; set; }
     }
 
 }

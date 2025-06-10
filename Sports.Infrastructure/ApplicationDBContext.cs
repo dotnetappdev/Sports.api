@@ -1,7 +1,8 @@
 ﻿using Microsoft.Build.Execution;
 using Microsoft.EntityFrameworkCore;
-using Sports.Models;
 
+using Sports.Models;
+using System.Drawing;
 namespace Sports.Infrastructure
 {
     public class ApplicationDbContext : DbContext
@@ -26,26 +27,6 @@ namespace Sports.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure DateAndTimeInfo as keyless entity
-            modelBuilder.Entity<DateAndTimeInfo>()
-                .HasNoKey();
-            modelBuilder.Entity<Meta>()
-                        .HasNoKey();
-
-            modelBuilder.Entity<Property>()
-                     .HasNoKey();
-
-            modelBuilder.Entity<RelatedSportsEvent>()
-                   .HasNoKey();
-            modelBuilder.Entity<Sport>()
-               .HasNoKey();
-            modelBuilder.Entity<States>()
-             .HasNoKey();
-            modelBuilder.Entity<Value>()
-       .HasNoKey();
-            modelBuilder.Entity<WeatherConditions>()
-       .HasNoKey();
-
 
             base.OnModelCreating(modelBuilder);
         }
