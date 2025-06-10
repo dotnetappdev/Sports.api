@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
-using Sports.Models;
+
 using Sports.Services.Interface;
 using Sports.Services.Mapping;
 using System;
@@ -26,14 +26,25 @@ namespace Sports.Services
             _context = context;
         }
 
-
+        public async Task<List<Sports.Models.Sport>?> GetAll()
+        {
+            return await _context.Sports.ToListAsync();
+        }
         public async Task<Sports.Models.Sport?> GetById(string Id)
         {
 
             return await _context.Sports.Where(w => w.id == Id).FirstOrDefaultAsync();
         }
 
+        public enum SearchFieldEnum
+        {
 
+            description,
+            type,
+            start_date,
+            attendanceSpecified
+
+        }
         /// <summary>
         /// Searches the specified query.
         /// </summary>
@@ -41,7 +52,7 @@ namespace Sports.Services
         /// <param name="searchField">The search field.</param>
         /// <param name="searchValue">The search value.</param>
         /// <returns></returns>
-        private IQueryable<Sports.Models.Sport> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] Enums.SearchField searchField, string searchValue)
+        private List<Sports.Models.Sport> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue)
         {
 
             if (query != null)
@@ -75,7 +86,7 @@ namespace Sports.Services
                 }
             }
 
-            return query;
+            return query.ToList();
         }
 
 
@@ -99,13 +110,13 @@ namespace Sports.Services
             using var stream = await response.Content.ReadAsStreamAsync();
 
             options.Converters.Add(new NavigationInfoJsonConverter());
-            var sportsData = await JsonSerializer.DeserializeAsync<List<Sport>>(stream, options);
+            var sportsData = await JsonSerializer.DeserializeAsync<List<Sports.Infrastructure.DTOs.Sport>>(stream, options);
             if (sportsData == null)
                 throw new InvalidOperationException("Failed to deserialize JSON data.");
             return sportsData;
         }
 
-        public int SaveData(List<Sport> sportsData)
+        public int SaveData(List<Sports.Models.Sport> sportsData)
         {
             _context.Sports.AddRange(SportsMapper.SportDTOToSport(sportsData));
             _context.SaveChanges();
