@@ -8,7 +8,7 @@ namespace Sports.Models
 {
     public class Meta
     {
-        public object update_id { get; set; }
+        public long? update_id { get; set; }
         public bool update_idSpecified { get; set; }
         public string update_action { get; set; }
         public DateTime update_date { get; set; }

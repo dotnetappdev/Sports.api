@@ -9,7 +9,7 @@ namespace Sports.Infrastructure
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            string webApiProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "../Sports.api");
+            string webApiProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "../Sports.api/Sports.api/");
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             // Use your actual connection string here or load from config

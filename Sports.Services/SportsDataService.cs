@@ -11,12 +11,39 @@ namespace Sports.Services
 {
     public class SportsDataService : ISportsDataInterface
     {
-        private readonly ApplicationDbContext _context;
-        SportsDataService(ApplicationDbContext context)
+        public readonly ApplicationDbContext _context;
+        public SportsDataService()
+        {
+
+        }
+
+        public SportsDataService(ApplicationDbContext context)
 
         {
             _context = context;
         }
+
+        /// <summary>
+        /// Gets the sport by id.
+        /// </summary>
+        /// <param name="Id">The identifier.</param>
+        public void GetById(string Id)
+        {
+            var test = _context.Sports.FirstOrDefault(s => s.id == Id);
+        }
+
+        public void GetById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// Loads from json URL asynchronous.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Failed to deserialize JSON data.</exception>
         public async Task<List<Sport>> LoadFromJsonUrlAsync(string url)
         {
             using var httpClient = new HttpClient();
@@ -37,9 +64,11 @@ namespace Sports.Services
             return sportsData;
         }
 
-        public void SaveData(int Id)
+        public int SaveData(List<Sport> sportsData)
         {
-
+            _context.Sports.AddRange(sportsData);
+            _context.SaveChanges();
+            return 1; // Return a Task<int> with a dummy value, as SaveChanges() does not return an int directly
 
         }
 

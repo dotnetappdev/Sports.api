@@ -13,6 +13,7 @@ namespace Sports.Services.Interface
 
         public void GetById(int Id);
 
+        public int SaveData(List<Sport> sportsData);
 
     }
 }
