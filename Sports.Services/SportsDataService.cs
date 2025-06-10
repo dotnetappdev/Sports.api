@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
-
+using Sports.Models;
 using Sports.Services.Interface;
 using Sports.Services.Mapping;
 using System;
@@ -52,41 +52,51 @@ namespace Sports.Services
         /// <param name="searchField">The search field.</param>
         /// <param name="searchValue">The search value.</param>
         /// <returns></returns>
-        private List<Sports.Models.Sport> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue)
+        public async  Task<SportAPIResponse> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue)
         {
-
-            if (query != null)
+            try
             {
-
-                // Apply searchField dynamically based on the 'sortBy' and 'sortOrder' parameters
-                switch (searchField.ToString())
+                if (query != null)
                 {
-                    case "description":
-                        query = query.Where(s => s.description.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
-                        break;
-                    case "type":
-                        if (int.TryParse(searchValue, out int typeValue))
-                        {
-                            query = query.Where(s => s.type == typeValue);
-                        }
-                        break;
-                    case "start_date":
-                        if (DateTime.TryParse(searchValue, out DateTime startDateValue))
-                        {
-                            query = query.Where(s => s.start_date_local.Date == startDateValue.Date);
-                        }
-                        break;
 
-                    case "attendanceSpecified":
-                        if (bool.TryParse(searchValue, out bool attendanceSpecifiedValue))
-                        {
-                            query = query.Where(s => s.attendanceSpecified != null);
-                        }
-                        break;
+                    // Apply searchField dynamically based on the 'sortBy' and 'sortOrder' parameters
+                    switch (searchField.ToString())
+                    {
+                        case "description":
+                            query = query.Where(s => s.description.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
+                            break;
+                        case "type":
+                            if (int.TryParse(searchValue, out int typeValue))
+                            {
+                                query = query.Where(s => s.type == typeValue);
+                            }
+                            break;
+                        case "start_date":
+                            if (DateTime.TryParse(searchValue, out DateTime startDateValue))
+                            {
+                                query = query.Where(s => s.start_date_local.Date == startDateValue.Date);
+                            }
+                            break;
+
+                        case "attendanceSpecified":
+                            if (bool.TryParse(searchValue, out bool attendanceSpecifiedValue))
+                            {
+                                query = query.Where(s => s.attendanceSpecified != null);
+                            }
+                            break;
+                    }
                 }
+
+                return new SportAPIResponse { Data = query.ToList(), Message = "Load from Service Succeed", StatusCode =200, Success = true };
+
+                 
+            }
+            catch (Exception ex)
+            {
+                return new SportAPIResponse { Data = null, Message = "Load from Service Failed", StatusCode = 500, Success = false };
             }
 
-            return query.ToList();
+
         }
 
 
@@ -96,38 +106,50 @@ namespace Sports.Services
         /// <param name="url">The URL.</param>
         /// <returns></returns>
         /// <exception cref="System.InvalidOperationException">Failed to deserialize JSON data.</exception>
-        public async Task<List<Sport>> LoadFromJsonUrlAsync(string url)
+        public async Task<SportAPIResponse> LoadFromJsonUrlAsync(string url)
         {
-            using var httpClient = new HttpClient();
-            using var response = await httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            var options = new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true
-            };
+                using var httpClient = new HttpClient();
+                using var response = await httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
 
-            using var stream = await response.Content.ReadAsStreamAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
 
-            options.Converters.Add(new NavigationInfoJsonConverter());
-            var sportsData = await JsonSerializer.DeserializeAsync<List<Sports.Infrastructure.DTOs.Sport>>(stream, options);
+                using var stream = await response.Content.ReadAsStreamAsync();
+
+                options.Converters.Add(new NavigationInfoJsonConverter());
+                var sportsData = await JsonSerializer.DeserializeAsync<List<Sports.Infrastructure.DTOs.Sport>>(stream, options);
+
+                return new SportAPIResponse { Data = null, Message = "Load from Service Succeded", StatusCode = 200, Success = true };
+            }
+            catch (Exception ex)
+            {
+                return new SportAPIResponse { Data = null, Message = "Load from Service Failed", StatusCode = 500, Success = false };
+            }
+
+        }
+        public async Task<SportAPIResponse> SaveData(List<Sports.Models.Sport> sportsData)
+        { 
             if (sportsData == null)
-                throw new InvalidOperationException("Failed to deserialize JSON data.");
-            return sportsData;
-        }
+            {
+                return new SportAPIResponse { Data = null, Message = "No data to save.", StatusCode = 400, Success = false };
+            }
 
-        public int SaveData(List<Sports.Models.Sport> sportsData)
-        {
-            _context.Sports.AddRange(SportsMapper.SportDTOToSport(sportsData));
-            _context.SaveChanges();
-            return 1; // Return a Task<int> with a dummy value, as SaveChanges() does not return an int directly
+            try
+            { 
+                await _context.Sports.AddRangeAsync(sportsData);
+                await _context.SaveChangesAsync();
+                return new SportAPIResponse { Data = _context.Sports.ToList(), Message = "Save Sucess", StatusCode = 200, Success = true };
 
-        }
-
-        public void SportDtoToSport(Sport sportDto)
-        {
-
-
+            }
+            catch (Exception ex)
+            {
+                return new SportAPIResponse { Data = _context.Sports.ToList(), Message = "Exception", StatusCode = 500, Success = false,Ex=ex };
+            }
         }
     }
 }

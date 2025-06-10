@@ -8,12 +8,8 @@ namespace Sports.Models
 {
     public class AppSettings
     {
-        public string JwtSecret { get; set; } = string.Empty;
 
-        public string BaseAddress { get; set; }
-        public string Issuer { get; set; } = string.Empty;
-        public string Audience { get; set; } = string.Empty;
-        public int ExpirationInMinutes { get; set; } = 0;
+        public string APIUrl { get; set; }
         public Dictionary<string, string> ConnectionStrings { get; set; } = new();
 
 

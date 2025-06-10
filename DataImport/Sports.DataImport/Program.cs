@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
+using Sports.Models;
 using Sports.Services;
 using Sports.Services.Interface;
 using Sports.Services.Mapping;
+using System.Collections.Generic;
 
 namespace Sports.DataImport
 {
@@ -26,6 +28,8 @@ namespace Sports.DataImport
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+            var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
+      
             var host = Host.CreateDefaultBuilder(args)
               .ConfigureServices(services =>
               {
@@ -38,12 +42,18 @@ namespace Sports.DataImport
               .Build();
 
             var processor = host.Services.GetRequiredService<ISportsDataInterface>();
-            string url = "https://myth.fra1.digitaloceanspaces.com/misc/528%20%281%29.json";
-            List<Sport> dataFromService = await processor.LoadFromJsonUrlAsync(url);
+            string url = appSettings.APIUrl;
+            if (string.IsNullOrEmpty(url))
+            {
+                Console.WriteLine("API URL is not configured in appsettings.json.");
+                return;
+            }
+            SportAPIResponse dataFromService = await processor.LoadFromJsonUrlAsync(url);
 
-            var test = SportsMapper.SportDTOToSport(dataFromService);
-            var saveData = processor.SaveData(dataFromService);
-            Console.WriteLine($"Data saved successfully. Number of records: {dataFromService.Count()}");
+            var data = (List<Sports.Infrastructure.DTOs.Sport>)dataFromService.Data;
+            var transformedData = SportsMapper.SportDTOToSport(data);
+            var saveData = processor.SaveData(transformedData);
+            Console.WriteLine($"Data saved successfully. Number of records: {data.Count()}");
             Console.ReadLine();
         }
     }

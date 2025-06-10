@@ -12,12 +12,12 @@ namespace Sports.Services.Interface
 {
     public interface ISportsDataInterface
     {
-        public Task<List<Sports.Infrastructure.DTOs.Sport>> LoadFromJsonUrlAsync(string url);
+        public Task<SportAPIResponse> LoadFromJsonUrlAsync(string url);
 
-        public Task<Sports.Models.Sport> GetById(string Id);
-        public async Task<List<Sports.Models.Sport>?> GetAll();
+                public Task<Sports.Models.Sport> GetById(string Id);
+        public  Task<List<Sports.Models.Sport>?> GetAll();
 
-        public IQueryable<Sports.Models.Sport> Search(List<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue);
+        public  Task<SportAPIResponse> SaveData(List<Sports.Models.Sport> sportsData);
 
     }
 }
