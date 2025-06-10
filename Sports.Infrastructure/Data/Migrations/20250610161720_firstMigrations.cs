@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sports.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class firstpush : Migration
+    public partial class firstMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

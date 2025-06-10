@@ -272,7 +272,7 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.ToTable("Sports");
                 });
 
-            modelBuilder.Entity("Sports.Models.States", b =>
+            modelBuilder.Entity("Sports.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -450,10 +450,10 @@ namespace Sports.Infrastructure.Data.Migrations
                     b.Navigation("navigation_info");
                 });
 
-            modelBuilder.Entity("Sports.Models.States", b =>
+            modelBuilder.Entity("Sports.Models.State", b =>
                 {
                     b.HasOne("Sports.Models.Sport", "Sport")
-                        .WithMany("state")
+                        .WithMany("States")
                         .HasForeignKey("SportsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -487,13 +487,13 @@ namespace Sports.Infrastructure.Data.Migrations
                 {
                     b.Navigation("Metas");
 
+                    b.Navigation("States");
+
                     b.Navigation("navigation_info");
 
                     b.Navigation("properties");
 
                     b.Navigation("related_sports_events");
-
-                    b.Navigation("state");
                 });
 #pragma warning restore 612, 618
         }

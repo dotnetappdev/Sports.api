@@ -16,6 +16,7 @@ namespace Sports.Models
 
         [Key]
         public int SportsId { get; set; }
+        [JsonPropertyName("Id")]     
         public string? id { get; set; }
 
 
@@ -30,7 +31,7 @@ namespace Sports.Models
         public int status { get; set; }
         public bool statusSpecified { get; set; }
         //public object names { get; set; }
-        public List<States> state { get; set; }
+        public ICollection<State> States { get; set; }
         //public object current_state { get; set; }
         public int attendance { get; set; }
         public bool attendanceSpecified { get; set; }
@@ -41,8 +42,8 @@ namespace Sports.Models
         public string? phase_id { get; set; }
         public List<string>? sports_organization_ids { get; set; }
         public List<string>? parent_sports_event_ids { get; set; }
-        [NotMapped]
-        public WeatherConditions weather_conditions { get; set; }
+     
+        public WeatherConditions? weather_conditions { get; set; }
         //public object event_attributes { get; set; }
         public string? sports_discipline_id { get; set; }
         public string? sports_gender_id { get; set; }

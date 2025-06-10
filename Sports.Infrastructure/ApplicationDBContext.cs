@@ -18,7 +18,7 @@ namespace Sports.Infrastructure
         public DbSet<NavigationInfo> NavigationInfos { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<RelatedSportsEvent> RelatedSportsEvents { get; set; }
-        public DbSet<States> States { get; set; }
+        public DbSet<State> States { get; set; }
 
         public DbSet<Value> Values { get; set; }
 

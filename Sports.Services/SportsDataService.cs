@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
+using Sports.Models;
 using Sports.Services.Interface;
 using Sports.Services.Mapping;
 using System;
@@ -24,18 +26,56 @@ namespace Sports.Services
             _context = context;
         }
 
-        /// <summary>
-        /// Gets the sport by id.
-        /// </summary>
-        /// <param name="Id">The identifier.</param>
-        public void GetById(string Id)
+
+        public async Task<Sports.Models.Sport?> GetById(string Id)
         {
-            var test = _context.Sports.FirstOrDefault(s => s.id == Id);
+
+            return await _context.Sports.Where(w => w.id == Id).FirstOrDefaultAsync();
         }
 
-        public void GetById(int Id)
+
+        /// <summary>
+        /// Searches the specified query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="searchField">The search field.</param>
+        /// <param name="searchValue">The search value.</param>
+        /// <returns></returns>
+        private IQueryable<Sports.Models.Sport> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] Enums.SearchField searchField, string searchValue)
         {
-            throw new NotImplementedException();
+
+            if (query != null)
+            {
+
+                // Apply searchField dynamically based on the 'sortBy' and 'sortOrder' parameters
+                switch (searchField.ToString())
+                {
+                    case "description":
+                        query = query.Where(s => s.description.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
+                        break;
+                    case "type":
+                        if (int.TryParse(searchValue, out int typeValue))
+                        {
+                            query = query.Where(s => s.type == typeValue);
+                        }
+                        break;
+                    case "start_date":
+                        if (DateTime.TryParse(searchValue, out DateTime startDateValue))
+                        {
+                            query = query.Where(s => s.start_date_local.Date == startDateValue.Date);
+                        }
+                        break;
+
+                    case "attendanceSpecified":
+                        if (bool.TryParse(searchValue, out bool attendanceSpecifiedValue))
+                        {
+                            query = query.Where(s => s.attendanceSpecified != null);
+                        }
+                        break;
+                }
+            }
+
+            return query;
         }
 
 

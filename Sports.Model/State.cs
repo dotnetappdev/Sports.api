@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Sports.Models
 {
-    public class States
+    public class State
     {
-        [Key]       
+        [Key]
         public int Id { get; set; }
         public string key { get; set; }
         public string value { get; set; }

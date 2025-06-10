@@ -41,5 +41,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Sports.Infrastructure\Sports.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\Sports.Model\Sports.Models.csproj" />
+		<ProjectReference Include="..\..\Sports.Services\Sports.Services.csproj" />
 	</ItemGroup>
 </Project>

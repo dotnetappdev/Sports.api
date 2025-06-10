@@ -1,4 +1,5 @@
-﻿using Sports.Infrastructure.DTOs;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Sports.Infrastructure.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace Sports.Services.Mapping
             {
                 return null;
             }
-            return sports.Select(sport => new Sports.Models.Sport
+
+            var entity = sports.Select(sport => new Sports.Models.Sport
             {
                 id = sport.id,
                 description = sport.description,
@@ -33,32 +35,25 @@ namespace Sports.Services.Mapping
                 sport_id = sport.sport_id,
                 venue_id = sport.venue_id,
                 phase_id = sport.phase_id,
-                date_and_time_info = sport.date_and_time_info != null ? new Sports.Models.DateAndTimeInfo
-                {
-
-                    scheduled_start_time_utc = sport.date_and_time_info.scheduled_start_time_utc,
-                    scheduled_start_time_utcSpecified = sport.date_and_time_info.scheduled_start_time_utcSpecified,
-                    scheduled_end_time_utc = sport.date_and_time_info.scheduled_end_time_utc,
-                    scheduled_end_time_utcSpecified = sport.date_and_time_info.scheduled_end_time_utcSpecified,
-                    actual_start_time_utc = sport.date_and_time_info.actual_start_time_utc,
-                    actual_start_time_utcSpecified = sport.date_and_time_info.actual_start_time_utcSpecified,
-                    actual_end_time_utc = sport.date_and_time_info.actual_end_time_utc,
-                    actual_end_time_utcSpecified = sport.date_and_time_info.actual_end_time_utcSpecified,
-                    start_date_local = sport.date_and_time_info.start_date_local,
-                    start_date_localSpecified = sport.date_and_time_info.start_date_localSpecified,
-                    end_date_local = sport.date_and_time_info.end_date_local,
-                    end_date_localSpecified = sport.date_and_time_info.end_date_localSpecified
-                } : null,
 
                 sports_organization_ids = sport.sports_organization_ids?.ToList(),
                 parent_sports_event_ids = sport.parent_sports_event_ids?.ToList(),
-                // weather_conditions = sport.weather_conditions, // Uncomment if mapping is needed and types match
                 sports_discipline_id = sport.sports_discipline_id,
-                sports_gender_id = sport.sports_gender_id
-                // Continue mapping other properties as needed
+                sports_gender_id = sport.sports_gender_id,
+                // FIX: Map DTO states to model States list
+                States = sport.state != null
+    ? sport.state.Select(s => new Sports.Models.State
+    {
+        SportId = sport.id, // Assuming SportId is the same as sport.id
+        key = s.key,
+        value = s.value
+        // Map other properties if needed
+    }).ToList()
+    : new List<Sports.Models.State>(),
+                // ...existing code...
+                // ...existing code...
             }).ToList();
-
-
+            return entity;
         }
     }
 }

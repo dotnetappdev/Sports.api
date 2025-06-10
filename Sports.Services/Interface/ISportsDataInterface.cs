@@ -1,4 +1,6 @@
-﻿using Sports.Infrastructure.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using Sports.Infrastructure.DTOs;
+using Sports.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,9 @@ namespace Sports.Services.Interface
     {
         public Task<List<Sport>> LoadFromJsonUrlAsync(string url);
 
-        public void GetById(int Id);
+        public Task<Sports.Models.Sport> GetById(string Id);
 
-        public int SaveData(List<Sport> sportsData);
+        public async IQueryable<Sports.Models.Sport> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] Enums.SearchField searchField, string searchValue)
 
     }
 }
