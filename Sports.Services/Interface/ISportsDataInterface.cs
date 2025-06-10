@@ -14,8 +14,8 @@ namespace Sports.Services.Interface
     {
         public Task<SportAPIResponse> LoadFromJsonUrlAsync(string url);
 
-                public Task<Sports.Models.Sport> GetById(string Id);
-        public  Task<List<Sports.Models.Sport>?> GetAll();
+        public Task<Sports.Models.Sport?> GetById(int Id);
+        public IQueryable<Sports.Models.Sport> GetAll();
         public Task<SportAPIResponse> Search(IQueryable<Sports.Models.Sport> query, [FromQuery] SearchFieldEnum searchField, string searchValue);
 
         public  SportAPIResponse SaveData(List<Sports.Models.Sport> sportsData);

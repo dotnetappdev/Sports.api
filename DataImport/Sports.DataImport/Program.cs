@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
 using Sports.Models;
@@ -29,8 +30,17 @@ namespace Sports.DataImport
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             var appSettings = configuration.GetSection("AppSettings").Get<AppSettings>();
-      
+
+
+            Log.Logger = new LoggerConfiguration()
+       .Enrich.FromLogContext()
+       .WriteTo.Console()
+       .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+       .CreateLogger();
+
+            // Replace defaul
             var host = Host.CreateDefaultBuilder(args)
+               .UseSerilog() // ✅ Attach Serilog here
               .ConfigureServices(services =>
               {
                   // Register ApplicationDbContext with your connection string
@@ -38,8 +48,11 @@ namespace Sports.DataImport
                       options.UseSqlServer(connectionString));
 
                   services.AddScoped<ISportsDataInterface, SportsDataService>();
+ 
               })
               .Build();
+
+          
 
             var processor = host.Services.GetRequiredService<ISportsDataInterface>();
             string url = appSettings.APIUrl;

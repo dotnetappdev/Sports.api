@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Sports.Infrastructure;
 using Sports.Infrastructure.DTOs;
 using Sports.Models;
@@ -14,26 +15,30 @@ namespace Sports.Services
 {
     public class SportsDataService : ISportsDataInterface
     {
+        private readonly ILogger<SportsDataService> _logger;
+
         public readonly ApplicationDbContext _context;
         public SportsDataService()
         {
 
         }
 
-        public SportsDataService(ApplicationDbContext context)
+        public SportsDataService(ApplicationDbContext context, ILogger<SportsDataService> logger)
 
         {
             _context = context;
+            _logger = logger;
+
         }
 
-        public async Task<List<Sports.Models.Sport>?> GetAll()
+        public IQueryable<Sports.Models.Sport> GetAll()
         {
-            return await _context.Sports.ToListAsync();
+            return _context.Sports.Include(c => c.related_sports_events).AsQueryable();
         }
-        public async Task<Sports.Models.Sport?> GetById(string Id)
+        public async Task<Sports.Models.Sport?> GetById(int Id)
         {
 
-            return await _context.Sports.Where(w => w.id == Id).FirstOrDefaultAsync();
+            return await _context.Sports.Where(w => w.SportsId == Id).Include(c=>c.related_sports_events).FirstOrDefaultAsync();
         }
 
         public enum SearchFieldEnum
@@ -63,7 +68,7 @@ namespace Sports.Services
                     switch (searchField.ToString())
                     {
                         case "description":
-                            query = query.Where(s => s.description.Contains(searchValue, StringComparison.OrdinalIgnoreCase));
+                            query = query.Where(s => s.description == searchValue);                            
                             break;
                         case "type":
                             if (int.TryParse(searchValue, out int typeValue))
@@ -74,25 +79,28 @@ namespace Sports.Services
                         case "start_date":
                             if (DateTime.TryParse(searchValue, out DateTime startDateValue))
                             {
-                                query = query.Where(s => s.start_date_local.Date == startDateValue.Date);
+                                query = query.Where(s => s.start_date_local.Date >= startDateValue.Date);
                             }
                             break;
 
                         case "attendanceSpecified":
                             if (bool.TryParse(searchValue, out bool attendanceSpecifiedValue))
                             {
-                                query = query.Where(s => s.attendanceSpecified != null);
+                                query = query.Where(s => s.attendanceSpecified == attendanceSpecifiedValue);
                             }
                             break;
                     }
                 }
+                var results   = query.ToList(); // Materialize here
+                return new SportAPIResponse { Data = results, Success = true };
 
-                return new SportAPIResponse { Data = query.ToList(), Message = "Load from Service Succeed", StatusCode =200, Success = true };
-
+          
                  
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error retrieving search results");
+
                 return new SportAPIResponse { Data = null, Message = "Load from Service Failed", StatusCode = 500, Success = false };
             }
 
@@ -127,7 +135,9 @@ namespace Sports.Services
                 return new SportAPIResponse { Data = sportsData, Message = "Load from Service Succeded", StatusCode = 200, Success = true };
             }
             catch (Exception ex)
+             
             {
+                _logger.LogError(ex, "Error retrieving sports");
                 return new SportAPIResponse { Data = null, Message = "Load from Service Failed", StatusCode = 500, Success = false };
             }
 

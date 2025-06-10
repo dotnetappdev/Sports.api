@@ -75,7 +75,9 @@ namespace Sports.Models
         //[JsonIgnore]
         //public object child_sports_events { get; set; }
 
-        public List<RelatedSportsEvent> related_sports_events { get; set; }
+        public ICollection<RelatedSportsEvent> related_sports_events { get; set; }
+
+        //public List<RelatedSportsEvent> related_sports_events { get; set; }
 
         public List<Meta> Metas { get; set; }
         // public int? xids { get; set; }

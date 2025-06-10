@@ -31,7 +31,7 @@ namespace Sports.api.Controllers
             {
                 return BadRequest("Search phrase cannot be null or empty.");
             }
-            var sports = await _sportsDataInterface.GetAll();
+            var sports =  _sportsDataInterface.GetAll();
             
             if (sports == null || !sports.Any())
             {
@@ -52,12 +52,8 @@ namespace Sports.api.Controllers
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetById(int id)
         {
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest("Id cannot be null or empty.");
-            }
             var sport = await _sportsDataInterface.GetById(id);
             if (sport == null)
             {
