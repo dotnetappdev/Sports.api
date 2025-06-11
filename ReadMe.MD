@@ -48,8 +48,8 @@ You can then use the endpoints to retrieve the data.
 ![alt text](assests/import5.png)
  
  
- NBS SportId Is used to link the data together. It is not a primary key, but 
- it is used to link the data together.
+ **NB SportId Is used to link the data together. It is not a primary key, but 
+ it is used to link the data together.**
 
 
  Due to time constraints Developer Testing was completed unit tests are hard to achieve 
