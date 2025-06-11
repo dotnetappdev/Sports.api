@@ -47,3 +47,14 @@ You can then use the endpoints to retrieve the data.
 
 ![alt text](assests/import5.png)
  
+ 
+ NBS SportId Is used to link the data together. It is not a primary key, but 
+ it is used to link the data together.
+
+
+ Due to time constraints Developer Testing was completed unit tests are hard to achieve 
+ for loading from a url to ef core.
+
+ Swagger is used here or at a different URL because of ports on your machine.
+
+ https://localhost:7110/swagger/index.html

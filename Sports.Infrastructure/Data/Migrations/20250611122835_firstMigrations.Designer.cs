@@ -12,8 +12,8 @@ using Sports.Infrastructure;
 namespace Sports.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250610205822_firstMigrations2")]
-    partial class firstMigrations2
+    [Migration("20250611122835_firstMigrations")]
+    partial class firstMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
